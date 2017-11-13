@@ -1,0 +1,5 @@
+myvenv
+migrations
+.idea
+*.pyc
+db.sqlite3

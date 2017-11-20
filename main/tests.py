@@ -1,18 +1,43 @@
-# from django.test import TestCase
-#
-# class PortalTest(TestCase):
-#     def test_models_creation(self):
-#         portal_models = Portal.objects.create(name='name', user="user")
-#         self.assertEqual(portal_models.name, 'name')
-#         self.assertEqual(portal_models.user, 'user')
-#
-#
-# class SetupTest(TestCase):
-#     def setUp(self):
-#         self.user = User.objects.create(name="name", user="user")
-#
-#
-# class User_Form_Test(TestCase):
-#     def test_UserForm_valid(self):
-#         form = PortalForm(data={'name': "us", 'user': "user"})
-#         self.assertTrue(form.is_valid())
+import sys
+from django.test import TestCase, Client
+from django.core.urlresolvers import reverse
+import requests
+from .views import *
+
+client = Client()
+input_data = {
+    'title': 'title',
+    'url': 'http://grablib.org'
+    }
+
+
+class ViewTest(TestCase):
+
+    def test_for_connection(self):
+        responce = self.client.get('http://127.0.0.1:8000/main/')
+        self.assertEqual(responce.status_code, 200)
+        self.assertTemplateUsed('template.html')
+
+
+    def test_catch_data(self):
+        responce = self.client.post()
+        self.assertEqual(responce.status_code, 200)
+
+
+
+
+        # request = self.client.post(reverse('catch_data'), data)
+        # request.client = self.client
+        #
+        # responce = MainFormsCreateView.as_view()(request)
+        # self.assertEqual(responce.status_code, 302)
+
+
+
+
+
+
+
+
+
+

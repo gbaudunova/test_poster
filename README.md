@@ -6,7 +6,7 @@ This program for posting blogs to news sites
 1) Python=3.5 
 2) Django=1.11.7
 
-####Installation
+#### Installation
 1) Create and activate virtual environment
 
 ```

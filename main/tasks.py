@@ -1,43 +1,57 @@
-from __future__ import unicode_literals
 import logging
-from celery import shared_task
-from grab import Grab
-logger = logging.getLogger('grab')
-logger.addHandler(logging.StreamHandler())
-logger.setLevel(logging.DEBUG)
+from grab import Grab, DataNotFound
+from grab.util.log import default_logging
+from portal.list_portals import list_portals
+from django.contrib import messages
 
-grab = Grab()
+default_logging()
+LOGGER = logging.getLogger('grab')
+LOGGER.addHandler(logging.StreamHandler())
+LOGGER.setLevel(logging.DEBUG)
 
-
-@shared_task()
-def register_users(input_data, portal):
-    urlLogin = 'http://news.ycombinator.com/login'
-    grab.setup(timeout=30, connect_timeout=30)
-    grab.go(urlLogin, log_file='login.html')
-    grab.doc.set_input('acct', 'denisoed')
-    grab.doc.set_input('pw', 'gorod312')
-    grab.doc.submit()
-    if grab.response.code == 200:
-        send_data(input_data, urlLogin)
-    else:
-        print('Error!')
+# Init grab
+GRAB = Grab()
 
 
-def send_data(input_data, urlLogin):
-    urlSubmit = 'http://news.ycombinator.com/submit'
-    grab.go(urlSubmit, log_file='submit.html')
-    grab.doc.set_input('url', input_data['url'])
-    grab.doc.set_input('title', input_data['title'])
-    grab.doc.set_input('description', input_data['description'])
-    grab.doc.submit()
+def auth_portal(portal, log_pass, request):
+    """ Authenticate selected portal """
+    try:
+        url_login = portal['url_auth']
+        GRAB.setup(timeout=10, connect_timeout=10)
+        GRAB.go(url_login, log_file='login.html')
+        GRAB.doc.text_search(portal['auth_by'])
+        try:
+            GRAB.doc.set_input(portal['inp_login'], log_pass['login'])
+            GRAB.doc.set_input(portal['inp_password'], log_pass['password'])
+            GRAB.doc.submit()
+            auth_form = GRAB.doc.text_search(portal['auth_complete'])
+            if auth_form is True:
+                messages.success(request, "Аутентификация прошла успешно!")
+                return True
+            else:
+                messages.error(request, "Введите корректный логин или пароль!")
+                return False
+        except DataNotFound:
+            messages.error(request, "Вы уже аутентифицированы!")
+            return False
+    except DataNotFound:
+        messages.error(
+            request, "Ошибка при получении формы аутентификации. Попробуйте позже!")
+        return False
 
 
-def handler_errors(error):
-    print(error)
-
-
-
-
-
-
-
+def send_spam(input_data, portals):
+    """ Send spam to all selected portals """
+    for i in range(len(portals)):
+        for p in range(len(list_portals)):
+            if str(portals[i]) == list_portals[p]['name']:
+                print(list_portals[p]['name'])
+                url_submit = list_portals[p]['url_submit']
+                GRAB.go(url_submit, log_file='submit.html')
+                GRAB.doc.set_input(
+                    list_portals[p]['inp_title'], input_data['title'])
+                GRAB.doc.set_input(
+                    list_portals[p]['inp_url'], input_data['url'])
+                GRAB.doc.set_input(
+                    list_portals[p]['inp_text'], input_data['description'])
+                GRAB.doc.submit()

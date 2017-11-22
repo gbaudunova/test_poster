@@ -20,7 +20,7 @@ def catch_data(request):
                 'empty': 'Это поле обязательное!'
             }
         else:
-            if len(requesbt.POST.get('title')) < 5 or len(request.POST.get('title')) > 50:
+            if len(request.POST.get('title')) < 5 or len(request.POST.get('title')) > 50:
                 context = {
                     'length': 'Заголовок должен быть более 5 и менее 50 символов!'
                 }

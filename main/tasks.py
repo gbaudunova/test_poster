@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
+import logging
 from celery import shared_task
 from grab import Grab
-import logging
-
 logger = logging.getLogger('grab')
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
@@ -11,9 +10,9 @@ grab = Grab()
 
 
 @shared_task()
-def register_users(input_data):
+def register_users(input_data, portal):
     urlLogin = 'http://news.ycombinator.com/login'
-    grab.setup(timeout=20, connect_timeout=20)
+    grab.setup(timeout=30, connect_timeout=30)
     grab.go(urlLogin, log_file='login.html')
     grab.doc.set_input('acct', 'denisoed')
     grab.doc.set_input('pw', 'gorod312')
@@ -29,7 +28,7 @@ def send_data(input_data, urlLogin):
     grab.go(urlSubmit, log_file='submit.html')
     grab.doc.set_input('url', input_data['url'])
     grab.doc.set_input('title', input_data['title'])
-    # grab.doc.set_input('description', input_data['description'])
+    grab.doc.set_input('description', input_data['description'])
     grab.doc.submit()
 
 

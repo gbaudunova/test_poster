@@ -8,7 +8,8 @@ class ViewTest(TestCase):
         self.input_data = {
             'title': 'title',
             'url': 'http://grablib.org',
-            'descroption': 'Autumn'
+            'descroption': 'Autumn',
+            'hackernews': 'hackernews'
         }
         self.empty_data = {
             'title': '',

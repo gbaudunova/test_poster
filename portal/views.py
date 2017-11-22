@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import PortalForm
 from .list_portals import list_portals
-from main.handler import auth_portal
+from main.tasks import auth_portal
 from .models import Portal
 from django.contrib import messages
 from django.contrib import auth

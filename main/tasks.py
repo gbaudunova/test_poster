@@ -28,12 +28,10 @@ def send_data(input_data, urlLogin):
     grab.go(urlSubmit, log_file='submit.html')
     grab.doc.set_input('url', input_data['url'])
     grab.doc.set_input('title', input_data['title'])
-    grab.doc.set_input('description', input_data['description'])
+    # grab.doc.set_input('description', input_data['description'])
     grab.doc.submit()
 
 
-def handler_errors(error):
-    print(error)
 
 
 

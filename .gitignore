@@ -1,0 +1,8 @@
+myvenv
+migrations
+.idea
+*.pyc
+db.sqlite3
+htmlcov/
+.coverage
+.vscode

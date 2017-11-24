@@ -22,13 +22,16 @@ class User_Form_Test(TestCase):
     def setUp(self):
         self.client = Client()
         self.userValidData = {
-            'login': 'denisoed',
-            'password': 'gorod312'
+            'login': 'login',
+            'password': 'password'
 
         }
+
     def test_UserForm_valid(self):
         form = PortalForm(data={'name': "us", 'user': "user"})
         self.assertTrue(form.is_valid())
 
-    def test_create_portal(self):
-        responce = self.client.post('')
+    # def test_create_portal(self):
+    #     responce = self.client.post(self.userValidData, follow=True)
+    #     self.assertTemplateUsed('template.html')
+    #     self.assertContains(responce, 'Error', 0)

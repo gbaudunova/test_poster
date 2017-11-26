@@ -1,8 +1,4 @@
-import sys
 from django.test import TestCase, Client
-from django.core.urlresolvers import reverse
-import requests
-from .views import *
 
 
 class ViewTest(TestCase):

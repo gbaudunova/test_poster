@@ -4,4 +4,5 @@ migrations
 *.pyc
 db.sqlite3
 htmlcov/
+.vscode
 .coverage

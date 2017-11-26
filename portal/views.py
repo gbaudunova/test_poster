@@ -21,8 +21,7 @@ def create_portal(request):
         if portal_form.is_valid():
             create_new_portal = portal_form.save(commit=False)
             if Portal.objects.filter(name=create_new_portal.name):
-                messages.error(
-                    request, "Портал %s уже существует в вашем списке!" % portal['name'])
+                messages.error(request, "Портал %s уже существует в вашем списке!" % portal['name'])
             else:
                 # Auth user in selected portal and create portal in database
                 auth_portal_complate = auth_portal(portal, log_pass, request)

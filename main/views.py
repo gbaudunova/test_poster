@@ -28,7 +28,7 @@ def catch_data(request):
                 input_data = {
                     'title': request.POST.get('title'),
                     'url': request.POST.get('url'),
-                    'description': request.POST.get('description')
+                    # 'description': request.POST.get('description')
                 }
                 context = {
                     'portal_form': portal_form

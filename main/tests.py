@@ -18,7 +18,9 @@ class ViewTest(TestCase):
 
         }
         self.small_data = {
-            'title': 't'
+            'title': 't',
+            'url': 'www',
+            'description': 'df'
         }
 
     def test_for_connection(self):
@@ -42,8 +44,8 @@ class ViewTest(TestCase):
 
     def test_for_fail_connection(self):
         responce = self.client.post('/main/', self.small_data)
-        responce = self.client.get('http://127.0.0.1:8000/main/')
-        self.assertNotEqual(responce.status_code, 404)
+        # responce = self.client.get('http://127.0.0.1:8000/main/')
+        self.assertNotEqual(responce.status_code, 200)
         self.assertTemplateUsed('template.html')
 
 

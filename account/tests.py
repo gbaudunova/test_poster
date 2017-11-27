@@ -1,4 +1,8 @@
 from django.test import TestCase, Client
+from .factories import UserAuthFactory
+# from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib import auth
 from importlib import import_module
 from django.conf import settings
 
@@ -24,7 +28,7 @@ class TestAuth(TestCase):
         self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
 
     def test_register_user(self):
-        response = self.client.post('/account/register/', self.data)    
+        response = self.client.post('/account/register/', self.data)
         self.assertEquals(response.status_code, 302)
 
     def test_login_user(self):

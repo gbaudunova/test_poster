@@ -28,7 +28,7 @@ class TestAuth(TestCase):
         self.client.cookies[settings.SESSION_COOKIE_NAME] = store.session_key
 
     def test_register_user(self):
-        response = self.client.post('/account/register/', self.data)    
+        response = self.client.post('/account/register/', self.data)
         self.assertEquals(response.status_code, 302)
 
     def test_login_user(self):

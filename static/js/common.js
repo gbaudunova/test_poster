@@ -10,7 +10,7 @@ sel_portal.addEventListener('change', function () {
 
 
 // Hide message after 4 seconds
-(function hideMessage() { 
+(function hideMessage() {
     setTimeout(function () {
         messages.fadeOut('slow');
     }, 4000);
@@ -30,11 +30,8 @@ $('.the_portal').click(function (event) {
     // the_portal = $(elem).text()
     // a = $(selected_portals).find('<input type="text" value="' + $.trim(the_portal) + '" name="selected_portal">');
     // if () {
-        // $(selected_portals).remove('<input type="text" value="' + $.trim(the_portal) +'" name="selected_portal">');
+    // $(selected_portals).remove('<input type="text" value="' + $.trim(the_portal) +'" name="selected_portal">');
     // } else {
-        // $(selected_portals).append('<input type="text" value="' + $.trim(the_portal) +'" name="selected_portal">');
+    // $(selected_portals).append('<input type="text" value="' + $.trim(the_portal) +'" name="selected_portal">');
     // }
 });
-
-
-

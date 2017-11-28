@@ -3,6 +3,8 @@ from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
+
+
 def registerUser(request):
     form = UserCreationForm()
     context = {
@@ -17,6 +19,7 @@ def registerUser(request):
             return redirect('/account/login/')
     return render(request, 'register.html', context)
 
+
 def authorizationUser(request):
     if request.method == 'POST':
         login = request.POST.get('login')
@@ -28,6 +31,7 @@ def authorizationUser(request):
         else:
             return redirect('/account/login/')
     return render(request, 'login.html')
+
 
 def logoutUser(request):
     auth.logout(request)

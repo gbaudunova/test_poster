@@ -22,6 +22,10 @@ class ViewTest(TestCase):
             'url': 'www',
             'description': 'df'
         }
+        self.userValidVData = {
+            'login': 'denisoed',
+            'password': 'gorod312'
+        }
 
     def test_for_connection(self):
         responce = self.client.get('http://127.0.0.1:8000/main/')
@@ -42,11 +46,14 @@ class ViewTest(TestCase):
         responce = self.client.post('/main/', self.small_data, follow=True)
         self.assertTemplateUsed('template.html')
 
-    def test_for_fail_connection(self):
-        responce = self.client.post('/main/', self.small_data)
-        # responce = self.client.get('http://127.0.0.1:8000/main/')
-        self.assertNotEqual(responce.status_code, 200)
-        self.assertTemplateUsed('template.html')
+    def test_for_check_authentification(self):
+        responce = self.client.post('/main/', self.userValidVData, follow=True)
+
+    # def test_for_fail_connection(self):
+    #     responce = self.client.post('/main/', self.small_data)
+    #     # responce = self.client.get('http://127.0.0.1:8000/main/')
+    #     self.assertNotEqual(responce.status_code, 200)
+    #     self.assertTemplateUsed('template.html')
 
 
 

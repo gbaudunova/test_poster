@@ -53,7 +53,7 @@ class ViewTest(TestCase):
         self.assertTemplateUsed('template.html')
         self.assertRedirects(response, '/main/', status_code=302, target_status_code=200)
 
-    def test_for_receive_data(self):
+    def test_for_auth_user(self):
         data = {'login': 'login_user', 'password': 'password_user'}
         r = self.client.post(reverse('portal:create_portal'), data=data, follow=True)
         self.assertEqual(r.status_code, 200)

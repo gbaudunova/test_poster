@@ -58,18 +58,5 @@ class ViewTest(TestCase):
         r = self.client.post(reverse('portal:create_portal'), data=data, follow=True)
         self.assertEqual(r.status_code, 200)
 
-    def test_for_delete_portals(self):
-        resp = self.client.get(reverse('portal:delete_portal', args=[id_portal]), follow=True)
-
-
-    # def test_for_create_portals(self):
-    #     portal_models = Portal.objects.create(name='Reddit', user="user1")
-    #     portal_form = PortalForm(data=self.validData)
-    #     self.assertTrue(portal_form.is_valid())
-    #     create_new_portal = portal_form.save()
-    #     # self.assertEqual(create_new_portal.name, self.validData['name'])
-    #     response = client.post(reverse('portal:create_portal'), {'name': 'Reddit', 'portals': 'Hacker News'}, follow=True)
-    #     a = portal_models.objects.filter(name=create_new_portal.name)
-    #     self.assertEqual(create_new_portal.name, jkj)
 
 

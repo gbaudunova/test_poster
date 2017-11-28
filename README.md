@@ -8,6 +8,7 @@ A Django webapp for posting blogs to the 4 largest resources (Hacker News, Reddi
 To create an own copy of this application, you have some prerequisites. They are:
 - [Python] - installed on your system
 - A [Hacker News], [Reddit], [Habrahabr], [Golang News] accounts for authentification
+
 ### Installing
 
 1. Download the project and extract it or clone the repo

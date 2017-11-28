@@ -34,6 +34,7 @@ $ ./manage.py migrate
 $ ./manage.py runserver
 ```
 Now, you have your own copy of this application!
+
 ### Running the tests
 ```
 $ ./manage.py test

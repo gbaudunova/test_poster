@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from .factories import UserAuthFactory
-# from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib import auth
 from importlib import import_module

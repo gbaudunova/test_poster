@@ -1,9 +1,9 @@
 from django.conf.urls import url
-from .views import registerUser, authorizationUser, logoutUser
+from .views import register_user, authorization_user, logout_user
 
 urlpatterns = [
-    url(r'register/$', registerUser, name='register user'),
-    url(r'login/$', authorizationUser, name='authorization user'),
-    url(r'logout/$', logoutUser, name='logout user'),
+    url(r'register/$', register_user, name='register user'),
+    url(r'login/$', authorization_user, name='authorization user'),
+    url(r'logout/$', logout_user, name='logout user'),
 ]
 

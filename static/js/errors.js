@@ -72,26 +72,6 @@ function checkEmptyInput(input) {
     })
 }
 
-
-// function checkSelectedPortal(portals) {
-//     let inpChecked = 0;
-//     for (var i = 0; i < portals.length; i++) {
-//         if (inpChecked != 1) {
-//             $(button_submit).prop("disabled", true);
-//             if ($(portals[i]).is(':checked')) {
-//                 inpChecked += 1;
-//                 $(button_submit).prop("disabled", false);
-//                 $('.right_part > .inp_error').empty();
-//             } else {
-//                 $(button_submit).prop("disabled", true);
-//                 $('.right_part > .inp_error').html(
-//                     '<li><i class="fa fa-warning"></i> Нужно что нибудь выбрать!</li>'
-//                 )
-//             }
-//         } return true;
-//     }
-// }
-
 checkEmptyInput(portal_password);
 checkEmptyInput(portal_login);
 inputTitleValidation(input_title);

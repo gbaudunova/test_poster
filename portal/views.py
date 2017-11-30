@@ -17,6 +17,7 @@ def create_portal(request):
         for i in range(len(list_portals)):
             if list_portals[i].get('name') == request.POST.get('portals'):
                 portal = list_portals[i]
+                return HttpResponseRedirect('.')
 
         portal_form = PortalForm(request.POST or None)
         if portal_form.is_valid():
@@ -34,7 +35,7 @@ def create_portal(request):
         else:
             return HttpResponseRedirect('.')
     else:
-        return redirect('/main/')
+        return HttpResponseRedirect('/main/')
 
 
 def delete_portal(request, id_portal):

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 from django.contrib import messages
 from grab import Grab, DataNotFound
@@ -19,13 +20,13 @@ def auth_portal(portal, log_pass, request):
     try:
         url_login = portal['url_auth']
         GRAB.setup(timeout=10, connect_timeout=10)
-        GRAB.go(url_login, log_file='templates/grab/bug_auth.html')
-        GRAB.doc.text_search(portal['auth_by'])
+        GRAB.go(url_login, log_file='login.html')
+        GRAB.doc.text_search(portal['auth_by'], byte=True)
         try:
             GRAB.doc.set_input(portal['inp_login'], log_pass['login'])
             GRAB.doc.set_input(portal['inp_password'], log_pass['password'])
             GRAB.doc.submit()
-            auth_form = GRAB.doc.text_search(portal['auth_complete'])
+            auth_form = GRAB.doc.text_search(portal['auth_complete'], byte=True)
             if auth_form is True:
                 messages.success(request, "Аутентификация прошла успешно!")
                 return True

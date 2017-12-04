@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -39,6 +40,13 @@ def find_selected_portal(request):
         if list_portals[i].get('name') == request.POST.get('portals'):
             portal = list_portals[i]
             return portal
+
+def find_selected_portal(request):
+    for i in range(len(list_portals)):
+        if list_portals[i].get('name') == request.POST.get('portals'):
+            portal = list_portals[i]
+            return portal
+
 
 def delete_portal(request, id_portal):
     portal = Portal.objects.filter(pk=id_portal)

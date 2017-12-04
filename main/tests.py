@@ -9,8 +9,7 @@ class ViewTest(TestCase):
         self.input_data = {
             'title': 'title',
             'url': 'http://grablib.org',
-            'descroption': 'Autumn',
-            'hackernews': 'hackernews'
+            'description': 'Autumn'
         }
         self.empty_data = {
             'title': '',
@@ -35,7 +34,7 @@ class ViewTest(TestCase):
         self.assertTemplateUsed('index.html')
 
     def test_check_data(self):
-        responce = self.client.post('/main/', self.input_data, follow=True)
+        responce = self.client.post(reverse('main:post_article'), self.input_data, follow=True)
         self.assertTemplateUsed('index.html')
         self.assertContains(responce, 'Error', 0)
 
@@ -50,13 +49,7 @@ class ViewTest(TestCase):
     def test_for_check_authentification(self):
         responce = self.client.post('/main/', self.user_valid_data, follow=True)
 
-# class TestTasks(TestCase):
-#
-#     def test_for_auth_user_in_portal(self):
-#         data = {'login': 'login1', 'password': 'password1'}
-#
-#         r = self.client.post(reverse('portal:auth_portal', kwargs={'log_pass': 'login'}), data=data)
-#         self.assertEqual(r.status_code, 200)
+
 
 
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from portal.tasks import send_spam
@@ -35,6 +34,6 @@ def catch_data(request):
                 'portal_form': portal_form
             }
 
-            send_spam(input_data, portals)
+            send_spam.delay(input_data, portals)
             return redirect('/main/')
     return render(request, 'index.html', context)

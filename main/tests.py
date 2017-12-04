@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+from django.urls import reverse
 
 
 class ViewTest(TestCase):
@@ -49,11 +50,15 @@ class ViewTest(TestCase):
     def test_for_check_authentification(self):
         responce = self.client.post('/main/', self.userValidVData, follow=True)
 
-    # def test_for_fail_connection(self):
-    #     responce = self.client.post('/main/', self.small_data)
-    #     # responce = self.client.get('http://127.0.0.1:8000/main/')
-    #     self.assertNotEqual(responce.status_code, 200)
-    #     self.assertTemplateUsed('template.html')
+# class TestTasks(TestCase):
+#
+#     def test_for_auth_user_in_portal(self):
+#         data = {'login': 'login1', 'password': 'password1'}
+#
+#         r = self.client.post(reverse('portal:auth_portal', kwargs={'log_pass': 'login'}), data=data)
+#         self.assertEqual(r.status_code, 200)
+
+
 
 
 

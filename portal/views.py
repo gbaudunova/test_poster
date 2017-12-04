@@ -35,11 +35,6 @@ def create_portal(request):
     else:
         return redirect('/main/')
 
-def find_selected_portal(request):
-    for i in range(len(list_portals)):
-        if list_portals[i].get('name') == request.POST.get('portals'):
-            portal = list_portals[i]
-            return portal
 
 def find_selected_portal(request):
     for i in range(len(list_portals)):

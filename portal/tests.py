@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-
 from .forms import *
 from .models import *
 
@@ -21,10 +20,10 @@ class PortalTest(TestCase):
         self.assertEqual(w.__str__(), w.name)
 
 
-class User_Form_Test(TestCase):
+class TestForm(TestCase):
 
-    def test_UserForm_valid(self):
-        form = PortalForm(data={'name': "us", 'user': "user"})
+    def test_user_form_valid(self):
+        form = PortalForm(data={'name': "Hacker News", 'user': "admin"})
 
         self.assertTrue(form.is_valid())
 
@@ -76,6 +75,7 @@ class ViewTest(TestCase):
         self.assertRedirects(r, '/portal/create/', status_code=302, target_status_code=302)
 
     def test_if_portal_form_valid_should_return_text_portal_exists_in_your_list(self):
+
         portal_form = {'name': 'Golang news', 'user': 'admin'}
 
         portal_models = Portal.objects.create(name='Golang news', user='user1')
@@ -86,10 +86,19 @@ class ViewTest(TestCase):
 
         self.assertEqual(r.context, "Портал %s  уже существует в вашем списке!" % portal_form['name'])
 
-    # def test_for_create_portal_in_selected_portal(self):
-    #     r = self.client.post(reverse('portal:create_portal'), data=self.validData)
-    #     self.assertEqual(r.status_code, 302)
-    #     self.assertRedirects(r, '/portal/create/', status_code=302, target_status_code=302)
+    def test_for_create_portal_in_selected_portal(self):
+
+        data = {'username': 'admin', 'password': 'password'}
+
+        valid_form = {'name': 'Hacker News', 'user': 'admin'}
+
+        portal_models = Portal.objects.create(name='Hacker news', user='admin')
+
+        r = self.client.post(reverse('/portal/create/'), data=valid_form)
+
+        self.assertEqual(r.status_code, 302)
+
+        self.assertRedirects(r, '/main/', status_code=302, target_status_code=302)
 
     def test_for_delete_portals(self):
 

@@ -38,8 +38,7 @@ def auth_portal(portal, log_pass, request):
             messages.error(request, "Вы уже аутентифицированы!")
             return False
     except DataNotFound:
-        messages.error(
-            request, "Ошибка при получении формы аутентификации. Попробуйте позже!")
+        messages.error(request, "Ошибка при получении формы аутентификации. Попробуйте позже!")
         return False
 
 

@@ -28,12 +28,12 @@ def catch_data(request):
             input_data = {
                 'title': request.POST.get('title'),
                 'url': request.POST.get('url'),
-                # 'description': request.POST.get('description')
+                'description': request.POST.get('description')
             }
             context = {
                 'portal_form': portal_form
             }
 
-            send_spam.delay(input_data, portals)
+            send_spam(input_data, portals)
             return redirect('/main/')
     return render(request, 'index.html', context)

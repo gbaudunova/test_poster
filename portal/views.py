@@ -29,6 +29,9 @@ def create_portal(request):
                     create_new_portal.user = user
                     create_new_portal.save()
                     return redirect('/main/')
+                else:
+                    messages.error(
+                        request, "Не получилось аутентифицироваться на портале %s" % portal['name'])
         else:
             messages.error(request, "Форма не валидна")
             return redirect('/main/')

@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from .tasks import send_spam
+from portal.tasks import send_spam
 from portal.forms import PortalForm
 from portal.models import Portal
 
@@ -17,8 +18,7 @@ def catch_data(request):
         portal_form = PortalForm(request.POST or None)
         if request.POST.get('title') == '' and request.POST.get('url') == '':
             context = {
-                'empty': 'Это поле обязательное!'
-            }
+                'empty': 'Это поле обязательное!'}
         else:
             # if len(request.POST.get('title')) < 5 or len(request.POST.get('title')) > 50:
             #     context = {
@@ -34,6 +34,6 @@ def catch_data(request):
                 'portal_form': portal_form
             }
 
-            send_spam(input_data, portals)
+            send_spam.delay(input_data, portals)
             return redirect('/main/')
-    return render(request, 'template.html', context)
+    return render(request, 'index.html', context)

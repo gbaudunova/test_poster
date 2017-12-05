@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import logging
 from django.contrib import messages
+from spamerBlog.celery import app
 from grab import Grab, DataNotFound
 from grab.util.log import default_logging
 from portal.list_portals import list_portals
@@ -41,6 +43,7 @@ def auth_portal(portal, log_pass, request):
         return False
 
 
+@app.task
 def send_spam(input_data, portals):
     """ Send spam to all selected portals """
     for i in range(len(portals)):

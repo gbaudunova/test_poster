@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib import auth
 from .forms import PortalForm
@@ -9,34 +8,41 @@ from .tasks import auth_portal
 from .models import Portal
 
 
-def create_portal(request):
+def catch_portal_form(request):
     if request.method == 'POST':
-        log_pass = {
-            'login': request.POST.get('login'),
-            'password': request.POST.get('password')
-        }
-        portal = find_selected_portal(request)
         portal_form = PortalForm(request.POST or None)
-        if portal_form.is_valid():
-            create_new_portal = portal_form.save(commit=False)
-            if Portal.objects.filter(name=create_new_portal.name):
-                messages.error(request, "Портал %s уже существует в вашем списке!" % portal['name'])
-            else:
-                # Auth user in selected portal and create portal in database
-                auth_portal_complate = auth_portal(portal, log_pass, request)
-                if auth_portal_complate == True:
-                    user = auth.get_user(request).username
-                    create_new_portal.user = user
-                    create_new_portal.save()
-                    return redirect('/main/')
-                else:
-                    messages.error(
-                        request, "Не получилось аутентифицироваться на портале %s" % portal['name'])
-        else:
-            messages.error(request, "Форма не валидна")
-            return redirect('/main/')
+        return portal_form
     else:
         return redirect('/main/')
+
+
+def portal_verification(request):
+    form = catch_portal_form(request)
+    if form.is_valid():
+        create_new_portal = form.save(commit=False)
+        portal = find_selected_portal(request)
+        return create_new_portal, portal
+
+    else:
+        messages.error(request, "Форма не валидна")
+        return redirect('/main/')
+
+
+def create_portal(request):
+    data = portal_verification(request)
+    create_new_portal = data[1]
+    portal = data[0]
+    if Portal.objects.filter(name=create_new_portal['name']):
+        messages.error(request, "Портал %s уже существует в вашем списке!" % portal['name'])
+    else:
+        auth_portal_complate = auth_portal(portal, auth, request)
+        if auth_portal_complate == True:
+            user = auth.get_user(request).username
+            create_new_portal.user = user
+            create_new_portal.save()
+            return redirect('/main/')
+        else:
+            messages.error(request, "Не получилось аутентифицироваться на портале %s" % portal['name'])
 
 
 def find_selected_portal(request):

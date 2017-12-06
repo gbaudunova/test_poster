@@ -86,11 +86,6 @@ class ViewTest(TestCase):
 
         self.assertEqual(r.context, "Портал %s  уже существует в вашем списке!" % portal_form['name'])
 
-    # def test_for_create_portal_in_selected_portal(self):
-    #     r = self.client.post(reverse('portal:create_portal'), data=self.validData)
-    #     self.assertEqual(r.status_code, 302)
-    #     self.assertRedirects(r, '/portal/create/', status_code=302, target_status_code=302)
-
     def test_for_delete_portals(self):
 
         data = {'login': 'login', 'password': '2323232'}

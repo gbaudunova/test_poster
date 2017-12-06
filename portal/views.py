@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib import auth
 from .forms import PortalForm

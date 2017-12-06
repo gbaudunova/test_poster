@@ -351,11 +351,7 @@ a:hover {
 }
 
 #myModal .modal-content input {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #0D1130;
-    padding: 8px 15px;
-    margin-bottom: 10px;
+
 }
 
 #select_portal {
@@ -373,7 +369,9 @@ a:hover {
 
 .add_auth_new_portal .form-group {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .add_auth_new_portal .form-group .input-group {
@@ -384,6 +382,7 @@ a:hover {
 
 .add_auth_new_portal .btn-primary {
     align-self: center;
+    margin-top: 10px;
 }
 
 /* ===================== Register style ===================== */

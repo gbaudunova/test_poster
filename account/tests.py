@@ -1,7 +1,5 @@
 from django.test import TestCase, Client
-from .factories import UserAuthFactory
-from django.contrib.auth.models import User
-from django.contrib import auth
+from django.urls import reverse
 from importlib import import_module
 from django.conf import settings
 
@@ -19,6 +17,10 @@ class TestAuth(TestCase):
             'username': 'testuser',
             'password': 'qwerty123'
         }
+        self.user1 = {
+            'login': 'testuser',
+            'password': 'qwerty123'
+        }
 
     def create_session(self):
         session_engine = import_module(settings.SESSION_ENGINE)
@@ -34,7 +36,12 @@ class TestAuth(TestCase):
         user = self.client.post('/account/register/', self.data)
         response = self.client.post('/account/login/', self.user)
         self.assertEquals(response.status_code, 302)
-        self.assertTemplateUsed('main.html')
+        self.assertRedirects(response, '/account/login/', status_code=302, target_status_code=200)
+
+    def test_if_user_is_not_None(self):
+        response = self.client.post('/account/login/', self.user1)
+        self.assertEquals(response.status_code, 302)
+        self.assertTemplateUsed('login.html')
 
     def test_logout_user(self):
         response = self.client.get('/account/logout/')

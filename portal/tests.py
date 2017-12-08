@@ -9,7 +9,7 @@ client = Client()
 
 class PortalTest(TestCase):
     def create_portal(self):
-        portal_models = Portal.objects.create(name='name1', user="user1")
+        portal_models = Portal.objects.create(name='Hacker News', user="user1")
         return Portal.objects.create(name='name', user="user")
         self.assertEqual(portal_models.name, 'name1')
         self.assertEqual(portal_models.user, 'user1')
@@ -22,10 +22,15 @@ class PortalTest(TestCase):
 
 class TestForm(TestCase):
 
-    def test_user_form_valid(self):
-        form = PortalForm(data={'name': "Hacker News", 'user': "admin"})
+    def test_user_form_is_not_valid(self):
+        data = {'name': "Hacker News", 'user': "admin", 'login': 'hjhk', 'password': 'dfdfd'}
+        form = PortalForm(data=data)
 
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(), True)
+
+    def test_user_form__is_not_valid(self):
+        form = PortalForm(data={'name': "Hacker News", 'user': "admin"})
+        self.assertFalse(form.is_valid(), False)
 
 
 class ViewTest(TestCase):
@@ -46,57 +51,44 @@ class ViewTest(TestCase):
             'portals': 'Hacker news'
         }
 
-    def test_for_connection(self):
-        response = self.client.get('https://127.0.0.1:8000/portal/create/')
-
-        self.assertTemplateUsed('template.html')
-
-        self.assertRedirects(response, '/main/', status_code=302, target_status_code=200)
-
     def test_for_auth_user(self):
-        data = {'login': 'login_user', 'password': 'password_user'}
+        data = {'name': "Hacker News",
+                'login': '',
+                'password': 'dfdfd'}
 
-        r = self.client.post(reverse('portal:create_portal'), data=data, follow=True)
+        r = self.client.get(reverse('portal:create_portal'), data=data, follow=True)
 
-        self.assertEqual(r.status_code, 200)
-
-    def test_for_auth_user_using_wrong_data(self):
-        wrong_data = {'login': 'L', 'password': ''}
-
-        resp = self.client.post(reverse('portal:create_portal'), data=wrong_data, follow=True)
-
-        self.assertEqual(resp.status_code, 200)
+        self.assertRedirects(r, '/main/', status_code=302, target_status_code=302)
 
     def test_for_selected_portal(self):
         r = self.client.post(reverse('portal:create_portal'), data=self.data)
 
-        self.assertEqual(r.status_code, 302)
+        self.assertEqual(r.status_code, 200)
 
-        self.assertRedirects(r, '/portal/create/', status_code=302, target_status_code=302)
+    def test_if_portal_already_exists(self):
+        data = {'name': "Hacker News", 'user': "admin", 'login': 'hjhk', 'password': 'dfdfd'}
+
+        portal_models = Portal.objects.create(name='Hacker news', user='user1')
+
+        r = self.client.post(reverse('portal:create_portal'), data=data)
+
+        self.assertEqual(r.status_code, 200)
+
+        self.assertEqual(r.context, "Портал уже существует в вашем списке!")
 
     def test_if_portal_form_valid_should_return_text_portal_exists_in_your_list(self):
 
-        portal_form = {'name': 'Golang news', 'user': 'admin'}
+        data = {'name': "Hacker News", 'user': "admin", 'login': 'hjhk', 'password': 'dfdfd'}
 
-        portal_models = Portal.objects.create(name='Golang news', user='user1')
+        r = self.client.post(reverse('portal:create_portal'), data=data)
 
-        r = self.client.post(reverse('portal:create_portal'), data=portal_form)
+        self.assertEqual(r.status_code, 200)
 
-        self.assertEqual(r.status_code, 302)
+    def test_for_false_verification_form(self):
 
-        self.assertEqual(r.context, "Портал %s  уже существует в вашем списке!" % portal_form['name'])
+        data = {'name': "Hacker News", 'user': "", 'login': 'hjhk'}
 
-    def test_for_create_portal_in_selected_portal(self):
-
-        data = {'username': 'admin', 'password': 'password'}
-
-        valid_form = {'name': 'Hacker News', 'user': 'admin'}
-
-        portal_models = Portal.objects.create(name='Hacker news', user='admin')
-
-        r = self.client.post(reverse('/portal/create/'), data=valid_form)
-
-        self.assertEqual(r.status_code, 302)
+        r = self.client.post(reverse('portal:create_portal'), data=data)
 
         self.assertRedirects(r, '/main/', status_code=302, target_status_code=302)
 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 import logging
 from django.contrib import messages
 from spamerBlog.celery import app
@@ -16,7 +16,7 @@ LOGGER.setLevel(logging.DEBUG)
 GRAB = Grab()
 
 
-def auth_portal(portal, auth, request):
+def auth_portal(portal, login, password, request):
     """ Authenticate selected portal """
     try:
         url_login = portal['url_auth']
@@ -24,10 +24,10 @@ def auth_portal(portal, auth, request):
         GRAB.go(url_login, log_file='templates/grab/bug_auth_portal.html')
         GRAB.doc.text_search(portal['auth_by'])
         try:
-            GRAB.doc.set_input(portal.append['inp_login'], auth['login'])
-            GRAB.doc.set_input(portal.append['inp_password'], auth['password'])
+            GRAB.doc.set_input(portal['inp_login'], login)
+            GRAB.doc.set_input(portal['inp_password'], password)
             GRAB.doc.submit()
-            auth_form = GRAB.doc.text_search(portal.append['auth_complete'])
+            auth_form = GRAB.doc.text_search(portal['auth_complete'])
             if auth_form is True:
                 messages.success(request, "Аутентификация прошла успешно!")
                 return True

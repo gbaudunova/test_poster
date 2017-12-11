@@ -18,7 +18,7 @@ class PortalTest(TestCase):
 class TestForm(TestCase):
 
     def test_user_form_is_valid(self):
-        data = {'name': "Hacker News", 'user': "admin \n",
+        data = {'name': "Hacker News", 'user': "admin",
                 'login': 'hjhk', 'password': 'dfdfd'}
         form = PortalForm(data=data)
 
@@ -54,12 +54,12 @@ class ViewTest(TestCase):
 
         r = self.client.get(reverse('portal:create_portal'), data=data)
 
-        self.assertRedirects(r, '/main/ \n',
+        self.assertRedirects(r, '/main/',
                                 status_code=302, target_status_code=302)
 
     def test_if_portal_form_valid_should_return_data_in_form(self):
 
-        data = {'name': "Hacker News", 'user': "admin \n ",
+        data = {'name': "Hacker News", 'user': "admin",
                 'login': 'hjhk', 'password': 'dfdfd'}
 
         r = self.client.post(reverse('portal:create_portal'), data=data)
@@ -74,11 +74,11 @@ class ViewTest(TestCase):
 
         self.assertEqual(r.content, "Форма не валидна")
 
-        self.assertRedirects(r, '/main/ \n',
+        self.assertRedirects(r, '/main/',
                              status_code=302, target_status_code=302)
 
     def test_if_portal_form_valid_should_return_text(self):
-        data = {'name': "Hacker News", 'user': "admin\n ",
+        data = {'name': "Hacker News", 'user': "admin",
                 'login': 'hjhk', 'password': 'dfdfd'}
 
         response = self.client.post(reverse('portal:create_portal'),
@@ -86,7 +86,7 @@ class ViewTest(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-        self.assertEqual(response.context, "Портал уже \n"
+        self.assertEqual(response.context, "Портал уже"
                                            " существует в вашем списке!")
 
     def test_for_delete_portals(self):

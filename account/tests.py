@@ -34,7 +34,7 @@ class TestAuth(TestCase):
     def test_login_user(self):
         response = self.client.post('/account/login/', self.user)
         self.assertEquals(response.status_code, 302)
-        self.assertRedirects(response, '/account/login/\n',
+        self.assertRedirects(response, '/account/login/',
                                        status_code=302, target_status_code=200)
 
     def test_if_user_is_not_None(self):

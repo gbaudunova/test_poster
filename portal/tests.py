@@ -43,7 +43,7 @@ class ViewTest(TestCase):
 
         }
         self.validData = {
-            'name': 'Reddit',
+            'name': 'Hacker News',
             'user': 'user1'
         }
         self.data = {
@@ -60,23 +60,7 @@ class ViewTest(TestCase):
 
         self.assertRedirects(r, '/main/', status_code=302, target_status_code=302)
 
-    def test_for_selected_portal(self):
-        r = self.client.post(reverse('portal:create_portal'), data=self.data)
-
-        self.assertEqual(r.status_code, 200)
-
-    def test_if_portal_already_exists(self):
-        data = {'name': "Hacker News", 'user': "admin", 'login': 'hjhk', 'password': 'dfdfd'}
-
-        portal_models = Portal.objects.create(name='Hacker news', user='user1')
-
-        r = self.client.post(reverse('portal:create_portal'), data=data)
-
-        self.assertEqual(r.status_code, 200)
-
-        self.assertEqual(r.context, "Портал уже существует в вашем списке!")
-
-    def test_if_portal_form_valid_should_return_text_portal_exists_in_your_list(self):
+    def test_if_portal_form_valid_should_return_data_in_form(self):
 
         data = {'name': "Hacker News", 'user': "admin", 'login': 'hjhk', 'password': 'dfdfd'}
 
@@ -90,7 +74,20 @@ class ViewTest(TestCase):
 
         r = self.client.post(reverse('portal:create_portal'), data=data)
 
+        self.assertEqual(r.content, "Форма не валидна")
+
         self.assertRedirects(r, '/main/', status_code=302, target_status_code=302)
+
+    def test_if_portal_form_valid_should_return_text_portal_exists_in_your_list(self):
+        data = {'name': "Hacker News", 'user': "admin", 'login': 'hjhk', 'password': 'dfdfd'}
+
+        portal_models = Portal.objects.create(name='Hacker news', user='user1')
+
+        response = self.client.post(reverse('portal:create_portal'), data=data)
+
+        self.assertEqual(response.status_code, 302)
+
+        self.assertEqual(response.context, "Портал уже существует в вашем списке!")
 
     def test_for_delete_portals(self):
 
@@ -101,8 +98,4 @@ class ViewTest(TestCase):
         self.assertEqual(r.status_code, 302)
 
         self.assertRedirects(r, '/main/', status_code=302, target_status_code=200)
-
-
-
-
 

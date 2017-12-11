@@ -43,7 +43,10 @@ list_portals = [
         'inp_title': 'title',
         'inp_url': 'url',
         'inp_text': 'text',
-        'auth_by': '<form action="/ajax/login/" class="s-form login_form validateble" id="login_form" method="post" data-remote="true" novalidate >',
+        'auth_by': '<form action="/ajax/login/\n'
+                   '" class="s-form login_form validateble\n'
+                   '" id="login_form" method="post" \n'
+                   'data-remote="true" novalidate >',
         'auth_complete': '<span class="user-info__nickname">'
     }
 ]

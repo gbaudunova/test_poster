@@ -1,6 +1,5 @@
 import unittest
 from . import tasks
-from grab import DataNotFound
 
 
 class TestTasks(unittest.TestCase):
@@ -28,8 +27,3 @@ class TestTasks(unittest.TestCase):
         ]
         data = ['Hacker news']
         self.assertEqual(tasks.get_selected_portal(data), portal)
-
-    def test_send_spam(self):
-        data = "{'url': 'https://www.google.com', 'title': 'title', 'description': None}"
-        sel_portal = ['Hacker news']
-        self.assertEqual(tasks.send_spam(data, sel_portal), 200)

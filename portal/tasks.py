@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import logging
 from django.contrib import messages
 from spamerBlog.celery import app
@@ -38,13 +38,13 @@ def auth_portal(portal, login, password, request):
             messages.error(request, "Вы уже аутентифицированы!")
             return False
     except DataNotFound:
-        messages.error(request, "Ошибка при получении формы аутентификации. Попробуйте позже!")
+        messages.error(request, "Ошибка при получении \n"
+                                "формы аутентификации. Попробуйте позже!")
         return False
 
 
 @app.task
 def send_spam(input_data, portals):
-    portals_list = get_selected_portal(portals)
     for p in range(len(get_selected_portal(portals))):
         url_submit = list_portals[p]['url_submit']
         GRAB.go(url_submit, log_file='templates/grab/bug_submit.html')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from django.contrib import messages
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -15,12 +15,14 @@ def register_user(request):
         form = UserCreationForm(request.POST or None)
         if form.is_valid():
             form.save()
-            new_user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            new_user = \
+                auth.authenticate(username=form.cleaned_data['username'],
+                                  password=form.cleaned_data['password1'])
             auth.login(request, new_user)
             return redirect('/account/login/')
         else:
             messages.error(request, "Ошибка сервера")
-    else:    
+    else:
         return render(request, 'register.html', context)
 
 
@@ -34,7 +36,7 @@ def authorization_user(request):
             return redirect('/main/')
         else:
             return redirect('/account/login/')
-    else:    
+    else:
         return render(request, 'login.html')
 
 

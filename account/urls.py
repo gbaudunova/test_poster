@@ -6,4 +6,3 @@ urlpatterns = [
     url(r'login/$', authorization_user, name='authorization user'),
     url(r'logout/$', logout_user, name='logout user'),
 ]
-

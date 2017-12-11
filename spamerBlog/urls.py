@@ -20,11 +20,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('main.urls', namespace='main')),
-    url(r'^portal/', include('portal.urls', namespace='portal')),
-    url(r'^account/', include('account.urls', namespace='account')),
+    url(r'', include('main.urls',
+                     namespace='main')),
+    url(r'^portal/', include('portal.urls',
+                             namespace='portal')),
+    url(r'^account/', include('account.urls',
+                              namespace='account')),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)

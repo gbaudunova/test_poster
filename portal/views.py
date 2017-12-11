@@ -18,14 +18,12 @@ def catch_portal_form(request):
 
 def portal_verification(request):
     portal_form = catch_portal_form(request)
-    print(portal_form)
     if portal_form.is_valid():
         selected_portal = portal_form.save(commit=False)
         obj_portal = find_selected_portal(request)
         login = portal_form.cleaned_data['login']
         password = portal_form.cleaned_data['password']
         return obj_portal, selected_portal, login, password
-
     else:
         messages.error(request, "Форма не валидна")
         return redirect('/main/')
@@ -33,21 +31,23 @@ def portal_verification(request):
 
 def create_portal(request):
     verificated_data = portal_verification(request)
-    obj_portal = verificated_data[0]
+    print(verificated_data)
+    portal = verificated_data[0]
     selected_portal = verificated_data[1]
     login = verificated_data[2]
     password = verificated_data[3]
     if Portal.objects.filter(name=selected_portal.name):
         messages.error(request, "Портал уже существует в вашем списке!")
     else:
-        auth_portal_complate = auth_portal(obj_portal, login, password, request)
-        if auth_portal_complate == True:
+        auth_portal_complate = auth_portal(portal, login, password, request)
+        if auth_portal_complate is True:
             user = auth.get_user(request).username
             selected_portal.user = user
             selected_portal.save()
             return redirect('/main/')
         else:
-            messages.error(request, "Не получилось аутентифицироваться на портале")
+            messages.error(request, "Не получилось\n"
+                                    " аутентифицироваться на портале")
 
 
 def find_selected_portal(request):
@@ -61,8 +61,3 @@ def delete_portal(request, id_portal):
     portal = Portal.objects.filter(pk=id_portal)
     portal.delete()
     return redirect('/main/')
-
-
-
-
-

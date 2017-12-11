@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from portal.views import create_portal, delete_portal
 from .tasks import auth_portal
-from .tasks import send_spam
 
 
 urlpatterns = [

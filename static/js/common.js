@@ -14,17 +14,18 @@ list_portals.addEventListener('click', (e) => {
     let target = e.target;
     if (target.getAttribute("id") == 'portal_name') {
         let portal_name = target.innerHTML;
-        let availabel_portals = $(selected_portals).children()
-        console.log(availabel_portals);
-        for (let i = 0; i < availabel_portals.length; i++) {
-            if (availabel_portals[i].value == portal_name) {
-                $(availabel_portals[i]).remove()
-                return true;
-            } else {
-                $(selected_portals).append(
-                    `<input type="text" value="${portal_name}" name="selected_portal">`
-                );
+        if ($(target).parent().children('span').attr('class') == 'lamp_disable') {
+            let available_portals = $(selected_portals).children()
+            for (let i = 0; i < available_portals.length; i++) {
+                if (available_portals[i].value == portal_name) {
+                    $(available_portals[i]).remove()
+                    return true;
+                }
             }
+        } else {
+            $(selected_portals).append(
+                `<input type="text" value="${portal_name}" name="selected_portal">`
+            );
         }
     }
 }, false);

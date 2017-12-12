@@ -20,11 +20,6 @@ def catch_data(request):
             context = {
                 'empty': 'Это поле обязательное!'}
         else:
-            # if len(request.POST.get('title')) < 5 or len(request.POST.get('title')) > 50:
-            #     context = {
-            #         'length': 'Заголовок должен быть более 5 и менее 50 символов!'
-            #     }
-            # else:
             input_data = {
                 'title': request.POST.get('title'),
                 'url': request.POST.get('url'),
@@ -34,6 +29,6 @@ def catch_data(request):
                 'portal_form': portal_form
             }
 
-            send_spam(input_data, portals)
+            send_spam.delay(input_data, portals)
             return redirect('/main/')
     return render(request, 'index.html', context)

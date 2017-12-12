@@ -34,17 +34,18 @@ class ViewTest(TestCase):
         self.assertTemplateUsed('index.html')
 
     def test_check_data(self):
-        responce = self.client.post(reverse('main:post_article'), self.input_data, follow=True)
+        responce = self.client.post(reverse('main:post_article'),
+                                    self.input_data)
         self.assertTemplateUsed('index.html')
         self.assertContains(responce, 'Error', 0)
 
     def test_empty_data(self):
         responce = self.client.post('/main/', self.empty_data, follow=True)
         self.assertTemplateUsed('index.html')
+        self.assertEqual(responce.status_code, 200)
 
     def test_length_of_data(self):
         responce = self.client.post('/main/', self.small_data, follow=True)
         self.assertTemplateUsed('index.html')
+        self.assertEqual(responce.status_code, 200)
 
-    def test_for_check_authentification(self):
-        responce = self.client.post('/main/', self.user_valid_data, follow=True)

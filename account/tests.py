@@ -1,5 +1,4 @@
 from django.test import TestCase, Client
-from django.urls import reverse
 from importlib import import_module
 from django.conf import settings
 
@@ -33,10 +32,10 @@ class TestAuth(TestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_login_user(self):
-        user = self.client.post('/account/register/', self.data)
         response = self.client.post('/account/login/', self.user)
         self.assertEquals(response.status_code, 302)
-        self.assertRedirects(response, '/account/login/', status_code=302, target_status_code=200)
+        self.assertRedirects(response, '/account/login/',
+                                       status_code=302, target_status_code=200)
 
     def test_if_user_is_not_None(self):
         response = self.client.post('/account/login/', self.user1)

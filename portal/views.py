@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib import auth
 from .forms import PortalForm
 from .list_portals import list_portals
-from .tasks import auth_portal
+from .tasks import get_login_page
 from .models import Portal
 
 
@@ -40,7 +40,7 @@ def create_portal(request):
     if Portal.objects.filter(name=selected_portal.name):
         messages.error(request, "Портал уже существует в вашем списке!")
     else:
-        auth_portal_complate = auth_portal(obj_portal, login, password, request)
+        auth_portal_complate = get_login_page(request, obj_portal, login, password)
         if auth_portal_complate == True:
             user = auth.get_user(request).username
             selected_portal.user = user

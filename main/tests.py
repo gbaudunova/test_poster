@@ -48,18 +48,3 @@ class ViewTest(TestCase):
 
     def test_for_check_authentification(self):
         responce = self.client.post('/main/', self.user_valid_data, follow=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

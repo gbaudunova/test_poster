@@ -48,3 +48,4 @@ class ViewTest(TestCase):
         responce = self.client.post('/main/', self.small_data, follow=True)
         self.assertTemplateUsed('index.html')
         self.assertEqual(responce.status_code, 200)
+

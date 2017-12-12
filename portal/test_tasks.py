@@ -1,14 +1,36 @@
-import unittest
+from django.test import TestCase, Client
 from . import tasks
+import requests
 
 
-class TestTasks(unittest.TestCase):
+class TestTasks(TestCase):
 
     def setUp(self):
-        self.log_pass = {
-            'login': 'denis',
-            'password': 'gorod312'
-        }
+        self.client = Client()
+
+    def test_get_login_page(self):
+        correct_login_page = 'https://news.ycombinator.com/login'
+        responce = requests.get(correct_login_page)
+        self.assertEqual(responce.status_code, 200)
+
+    def test_incorrect_login_page(self):
+        incorrect_login_page = 'https://news.ycombinator.com/lagen'
+        responce = requests.get(incorrect_login_page)
+        self.assertEqual(responce.status_code, 404)
+
+    def test_get_registered_user(self):
+        user = 'denisoed'
+        get_user = 'https://news.ycombinator.com/user?id={}'.format(user)
+        responce = requests.get(get_user)
+        res_text = responce.text
+        self.assertNotEqual(res_text.find(user), -1)
+
+    def test_registered_user_not_found(self):
+        user = 'silvester-stalone'
+        get_user_url = 'https://news.ycombinator.com/user?id={}'.format(user)
+        responce = requests.get(get_user_url)
+        res_text = responce.text
+        self.assertEqual(res_text.find(user), -1)
 
     def test_get_selected_portal(self):
         portal = [
@@ -27,3 +49,17 @@ class TestTasks(unittest.TestCase):
         ]
         data = ['Hacker news']
         self.assertEqual(tasks.get_selected_portal(data), portal)
+
+    def test_successful_auth_in_portal(self):
+        login = 'denisoed'
+        password = 'gorod312'
+        response = requests.post('https://news.ycombinator.com/login', data={'acct': login, 'pw': password})
+        res_text = response.text
+        self.assertNotEqual(res_text.find('logout'), -1)
+
+    def test_failed_auth_in_portal_incorrect_data(self):
+        login = 'silvester-stalone'
+        password = 'my-best-password'
+        response = requests.post('https://news.ycombinator.com/login', data={'acct': login, 'pw': password})
+        res_text = response.text
+        self.assertEqual(res_text.find('logout'), -1)

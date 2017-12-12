@@ -16,35 +16,42 @@ LOGGER.setLevel(logging.DEBUG)
 GRAB = Grab()
 
 
-def auth_portal(portal, login, password, request):
+def get_login_page(request, portal, login, password):
     """ Authenticate selected portal """
     try:
         url_login = portal['url_auth']
         GRAB.setup(timeout=10, connect_timeout=10)
         GRAB.go(url_login, log_file='templates/grab/bug_auth_portal.html')
         GRAB.doc.text_search(portal['auth_by'])
-        try:
-            GRAB.doc.set_input(portal['inp_login'], login)
-            GRAB.doc.set_input(portal['inp_password'], password)
-            GRAB.doc.submit()
-            auth_form = GRAB.doc.text_search(portal['auth_complete'])
-            if auth_form is True:
-                messages.success(request, "Аутентификация прошла успешно!")
-                return True
-            else:
-                messages.error(request, "Введите корректный логин или пароль!")
-                return False
-        except DataNotFound:
-            messages.error(request, "Вы уже аутентифицированы!")
+        auth_portal(request, portal, login, password)
+        return True
+    except DataNotFound:
+        messages.error(
+            request, "Ошибка при получении формы аутентификации. Попробуйте позже!")
+        return False
+
+
+def auth_portal(request, portal, login, password):
+    """ Authenticate selected portal """
+    try:
+        GRAB.doc.set_input(portal['inp_login'], login)
+        GRAB.doc.set_input(portal['inp_password'], password)
+        GRAB.doc.submit()
+        auth_form = GRAB.doc.text_search(portal['auth_complete'])
+        if auth_form is True:
+            messages.success(request, "Аутентификация прошла успешно!")
+            return True
+        else:
+            messages.error(request, "Введите корректный логин или пароль!")
             return False
     except DataNotFound:
-        messages.error(request, "Ошибка при получении \n"
-                                "формы аутентификации. Попробуйте позже!")
+        messages.error(request, "Вы уже аутентифицированы!")
         return False
 
 
 @app.task
 def send_spam(input_data, portals):
+    portals_list = get_selected_portal(portals)
     for p in range(len(get_selected_portal(portals))):
         url_submit = list_portals[p]['url_submit']
         GRAB.go(url_submit, log_file='templates/grab/bug_submit.html')

@@ -252,7 +252,7 @@ a:hover {
 }
  
 .main .selected_portals {
-    display: none;
+    /* display: none; */
 }
 
 .main_bg {

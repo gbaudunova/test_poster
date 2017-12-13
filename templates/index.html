@@ -32,7 +32,7 @@
         </button>
         <div id="list_portals" class="list_portals">
 
-            {% if portals %} {% for portal in portals %}
+            {% if portals_user %} {% for portal in portals_user %}
             <div class="the_portal selected_portal">
                 <a class="delete-portal" href="/portal/delete/{{ portal.id }}/">
                     <i class="fa fa-trash-o"></i>
@@ -86,12 +86,12 @@
         <div class="container">
             <h1 class="main_bg">Spamer</h1>
 
-            {% if portals %}
+            {% if portals_user %}
             <form action="/catch_data/" method="POST" class="form">{% csrf_token %}
 
                 <div class="selected_portals">
                     <!-- Selected portals-->
-                    {% if portals %} {% for portal in portals %}
+                    {% if portals_user %} {% for portal in portals_user %}
                         <input type="text" value="{{ portal.name }}" name="selected_portal">
                     {% endfor %}    
                     {% endif %}

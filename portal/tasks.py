@@ -49,18 +49,18 @@ def auth_portal(request, portal, login, password):
         return False
 
 
-@app.task
+# @app.task
 def send_spam(input_data, portals):
     portals_list = get_selected_portal(portals)
-    for p in range(len(get_selected_portal(portals))):
-        url_submit = list_portals[p]['url_submit']
+    for p in range(len(portals_list)):
+        url_submit = portals_list[p]['url_submit']
         GRAB.go(url_submit, log_file='templates/grab/bug_submit.html')
         GRAB.doc.set_input(
-            list_portals[p]['inp_title'], input_data['title'])
+            portals_list[p]['inp_title'], input_data['title'])
         GRAB.doc.set_input(
-            list_portals[p]['inp_url'], input_data['url'])
+            portals_list[p]['inp_url'], input_data['url'])
         GRAB.doc.set_input(
-            list_portals[p]['inp_text'], input_data['description'])
+            portals_list[p]['inp_text'], input_data['description'])
         GRAB.doc.submit()
     return GRAB.response.code
 
